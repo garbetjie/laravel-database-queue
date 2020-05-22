@@ -18,6 +18,8 @@ class ServiceProvider extends BaseServiceProvider
                         return new Connector($this->app['db']);
                     }
                 );
+
+                return $queueManager;
             }
         );
     }
