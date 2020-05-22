@@ -1,0 +1,30 @@
+{
+    "name": "garbetjie/laravel-queue-database",
+    "description": "Laravel queue driver for the database with optimistic queue locking.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Geoff Garbers",
+            "email": "geoff@garbers.co.za"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Garbetjie\\Laravel\\DatabaseQueue\\": "src"
+        }
+    },
+    "require": {
+        "php": ">= 7.2",
+        "illuminate/database": "^6.0 || ^7.0",
+        "illuminate/support": "^6.0 || ^7.0",
+        "illuminate/queue": "^6.0 || ^7.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Garbetjie\\Laravel\\DatabaseQueue\\ServiceProvider"
+            ]
+        }
+    }
+}
