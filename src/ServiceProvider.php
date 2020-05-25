@@ -14,7 +14,7 @@ class ServiceProvider extends BaseServiceProvider
             'queue',
             function (QueueManager $queueManager) {
                 $queueManager->addConnector(
-                    'database-optimistic',
+                    'optimistic',
                     function () {
                         return new Connector($this->app['db']);
                     }

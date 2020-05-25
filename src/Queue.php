@@ -96,15 +96,14 @@ class Queue extends DatabaseQueue
             return;
         }
 
-        // Create a job.
-        $job = new DatabaseJobRecord($this->selectJob($available));
+        // Shuffle the available jobs, and iterate over them and return the first job that can be claimed.
+        $shuffled = $available->shuffle();
 
-        // Attempt to claim the job.
-        if ($claimed = $this->marshalJob($queue, $job)) {
-            return $claimed;
+        foreach ($shuffled as $job) {
+            if ($claimed = $this->marshalJob($queue, new DatabaseJobRecord($job))) {
+                return $claimed;
+            }
         }
-
-        return;
     }
 
     /**
