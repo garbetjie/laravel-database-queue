@@ -31,6 +31,7 @@ return [
             'queue' => 'default',
             'retry_after' => 60,
             'prefetch' => 5,
+            'shuffle' => true,
         ]
     ], 
 ];
@@ -42,6 +43,8 @@ This queue driver extends the default `database` queue driver. As a result, the 
 exactly the same as the original database queue driver (https://laravel.com/docs/7.x/queues#driver-prerequisites), except
 for one additional configuration option:
 
-| Name       | Type  | Default | Description                                                                                                                               |
-|------------|-------|---------|-------------------------------------------------------------------------------------------------------------------------------------------|
-| prefetch   | int   | 5       | Determines how many queue jobs to fetch before attempting to reserve one. Should ideally default to the number of workers for your queue. |
+| Name     | Type | Default | Description                                                                                                                               |
+|----------|------|---------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| prefetch | int  | 5       | Determines how many queue jobs to fetch before attempting to reserve one. Should ideally default to the number of workers for your queue. |
+| shuffle  | bool | true    | Whether or not to shuffle fetched jobs before attempting to reserve one.                                                                  |
+

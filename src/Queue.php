@@ -19,6 +19,11 @@ class Queue extends DatabaseQueue
     protected $prefetch = 5;
 
     /**
+     * @var bool
+     */
+    protected $shuffle = true;
+
+    /**
      * Set the number of queue records to prefetch when trying to acquire a job.
      *
      * @param int $prefetch
@@ -32,6 +37,21 @@ class Queue extends DatabaseQueue
         }
 
         $this->prefetch = $prefetch;
+
+        return $this;
+    }
+
+    /**
+     * Set a boolean flag indicating whether or not to shuffle the prefetched results. Shuffling will result in jobs
+     * being processed out of order by up to $prefetch jobs.
+     *
+     * @param bool $shuffle
+     *
+     * @return $this
+     */
+    public function shuffle(bool $shuffle)
+    {
+        $this->shuffle = $shuffle;
 
         return $this;
     }
@@ -97,9 +117,11 @@ class Queue extends DatabaseQueue
         }
 
         // Shuffle the available jobs, and iterate over them and return the first job that can be claimed.
-        $shuffled = $available->shuffle();
+        if ($this->shuffle) {
+            $available = $available->shuffle();
+        }
 
-        foreach ($shuffled as $job) {
+        foreach ($available as $job) {
             if ($claimed = $this->marshalJob($queue, new DatabaseJobRecord($job))) {
                 return $claimed;
             }

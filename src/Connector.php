@@ -19,6 +19,10 @@ class Connector extends DatabaseConnector
             $connection->prefetch($config['prefetch']);
         }
 
+        if (isset($config['shuffle'])) {
+            $connection->shuffle($config['shuffle']);
+        }
+
         return $connection;
     }
 
