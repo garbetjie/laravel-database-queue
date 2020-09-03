@@ -1,0 +1,66 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+
+class Create{{tableClassName}}QueueCountsTrigger extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        $db = DB::connection($this->connection);
+
+        $statements = [
+            'mysql' => [
+                'CREATE TRIGGER {{jobsTable}}_increase_queue_counts AFTER INSERT ON {{jobsTable}} FOR EACH ROW
+                 INSERT INTO {{table}}(queue, job_count) VALUES (NEW.queue, 1) ON DUPLICATE KEY UPDATE job_count = job_count + 1',
+                'CREATE TRIGGER {{jobsTable}}_decrease_queue_counts AFTER DELETE ON {{jobsTable}} FOR EACH ROW
+                 UPDATE {{table}} SET job_count = job_count - 1 WHERE queue = OLD.queue',
+            ],
+            'sqlite' => [
+                'CREATE TRIGGER {{jobsTable}}_increase_queue_counts AFTER INSERT ON {{jobsTable}} BEGIN
+                    INSERT IGNORE INTO {{table}} (queue, job_count) VALUES (NEW.queue, 0);
+                    UPDATE {{table}} SET job_count = job_count + 1 WHERE queue = NEW.queue;
+                 END',
+                'CREATE TRIGGER {{jobsTable}}_decrease_queue_counts AFTER DELETE ON {{jobsTable}} BEGIN
+                    UPDATE {{table}} SET job_count = job_count - 1 WHERE queue = OLD.queue;
+                 END',
+            ],
+        ][$db->getDriverName()] ?? [];
+
+        foreach ($statements as $sql) {
+            $db->unprepared($sql);
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        $db = DB::connection($this->connection);
+
+        $statements = [
+            'mysql' => [
+                "DROP TRIGGER IF EXISTS {{jobsTable}}_increase_queue_counts",
+                "DROP TRIGGER IF EXISTS {{jobsTable}}_decrease_queue_counts",
+            ],
+            'sqlite' => [
+                "DROP TRIGGER IF EXISTS {{jobsTable}}_increase_queue_counts",
+                "DROP TRIGGER IF EXISTS {{jobsTable}}_decrease_queue_counts",
+            ],
+        ][$db->getDriverName()] ?? [];
+
+        foreach ($statements as $sql) {
+            $db->unprepared($sql);
+        }
+    }
+}

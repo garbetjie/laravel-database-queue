@@ -1,0 +1,54 @@
+<?php
+
+use Illuminate\Database\ConnectionInterface;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+use RuntimeException;
+
+class Insert{{tableClassName}}QueueCounts extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        $db = DB::connection($this->connection);
+
+        $statements = [
+            'mysql' => [
+                'LOCK TABLE {{table}}',
+                'REPLACE INTO {{table}} (queue, job_count) SELECT queue, COUNT(*) FROM {{jobsTable}} GROUP BY 1',
+            ],
+            'sqlite' => [
+                'REPLACE INTO {{table}} (queue, job_count) SELECT queue, COUNT(*) FROM {{jobsTable}} GROUP BY 1',
+            ],
+        ][$db->getDriverName()] ?? [];
+
+        $db->transaction(
+            function (ConnectionInterface $db) use ($statements) {
+                foreach ($statements as $sql) {
+                    $db->unprepared($sql);
+                }
+            }
+        );
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        $db = DB::connection($this->connection);
+        $db->unprepared(
+            [
+                'sqlite' => "DELETE FROM {{table}}",
+            ][$db->getDriverName()] ?? "TRUNCATE TABLE {{table}}"
+        );
+    }
+}
