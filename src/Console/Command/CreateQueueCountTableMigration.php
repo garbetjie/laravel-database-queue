@@ -8,7 +8,9 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Queue\Console\TableCommand;
 use Illuminate\Support\Composer;
 use Illuminate\Support\Str;
+use function pathinfo;
 use function str_replace;
+use const PATHINFO_FILENAME;
 
 class CreateQueueCountTableMigration extends Command
 {
@@ -72,13 +74,15 @@ class CreateQueueCountTableMigration extends Command
         $jobsTable = $this->laravel['config']['queue.connections.database.table'];
         $table = $jobsTable . '_count';
 
+
         $path = $this->laravel['migration.creator']->create($migrationName, $this->laravel->databasePath() . '/migrations');
         $stub = str_replace(
-            ['{{table}}', '{{tableClassName}}', '{{jobsTable}}'],
-            [$table, Str::studly($table), $jobsTable],
+            ['{{table}}', '{{className}}', '{{jobsTable}}'],
+            [$table, Str::studly($migrationName), $jobsTable],
             $this->files->get($stubPath)
         );
 
         $this->files->put($path, $stub);
+        $this->info('Created migration ' . pathinfo($path, PATHINFO_FILENAME) . ' successfully.');
     }
 }
