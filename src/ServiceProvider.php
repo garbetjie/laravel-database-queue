@@ -2,7 +2,7 @@
 
 namespace Garbetjie\Laravel\DatabaseQueue;
 
-use Garbetjie\Laravel\DatabaseQueue\Console\Command\CreateMigration;
+use Garbetjie\Laravel\DatabaseQueue\Console\Command\CreateQueueTableMigration;
 use Garbetjie\Laravel\DatabaseQueue\Console\Command\CreateQueueCountTableMigration;
 use Illuminate\Queue\QueueManager;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
@@ -26,7 +26,7 @@ class ServiceProvider extends BaseServiceProvider
         );
 
         if ($this->app->runningInConsole()) {
-            $this->commands(CreateMigration::class, CreateQueueCountTableMigration::class);
+            $this->commands(CreateQueueTableMigration::class, CreateQueueCountTableMigration::class);
         }
     }
 }

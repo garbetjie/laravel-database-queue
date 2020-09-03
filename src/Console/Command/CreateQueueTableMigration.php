@@ -6,7 +6,7 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Queue\Console\TableCommand;
 use function str_replace;
 
-class CreateMigration extends TableCommand
+class CreateQueueTableMigration extends TableCommand
 {
     /**
      * @var string
