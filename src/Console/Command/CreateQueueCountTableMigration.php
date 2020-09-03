@@ -15,12 +15,12 @@ class CreateQueueCountTableMigration extends Command
     /**
      * @var string
      */
-    protected $signature = 'garbetjie:queue:create-count-table';
+    protected $signature = 'garbetjie:database-queue:table-job-counts';
 
     /**
      * @var string
      */
-    protected $description = 'Create the migration for storing queue counts in a separate table.';
+    protected $description = 'Create the migrations for storing queue counts in a separate table, and keeping them synchronised.';
 
     /**
      * @var Filesystem

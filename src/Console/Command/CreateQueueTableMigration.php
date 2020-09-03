@@ -11,7 +11,7 @@ class CreateQueueTableMigration extends TableCommand
     /**
      * @var string
      */
-    protected $signature = 'garbetjie:queue:table';
+    protected $signature = 'garbetjie:database-queue:table';
 
     /**
      * @var string

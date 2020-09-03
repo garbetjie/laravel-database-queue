@@ -1,5 +1,5 @@
 {
-    "name": "garbetjie/laravel-queue-database",
+    "name": "garbetjie/laravel-database-queue",
     "description": "Laravel queue driver for the database with optimistic queue locking.",
     "type": "library",
     "license": "MIT",

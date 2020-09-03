@@ -14,12 +14,14 @@ class ServiceProvider extends BaseServiceProvider
         $this->app->extend(
             'queue',
             function (QueueManager $queueManager) {
-                $queueManager->addConnector(
-                    'optimistic',
-                    function () {
-                        return new Connector($this->app['db']);
-                    }
-                );
+                foreach (['optimistic', 'database-garbetjie'] as $driverName) {
+                    $queueManager->addConnector(
+                        $driverName,
+                        function () {
+                            return new Connector($this->app['db']);
+                        }
+                    );
+                }
 
                 return $queueManager;
             }
