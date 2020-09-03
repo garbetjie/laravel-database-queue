@@ -17,7 +17,8 @@ class {{className}} extends Migration
 
         $statements = [
             'mysql' => [
-                'LOCK TABLES {{table}} WRITE',
+                'LOCK TABLES {{jobsTable}} WRITE',
+                'TRUNCATE TABLE {{table}}',
                 'REPLACE INTO {{table}} (queue, job_count) SELECT queue, COUNT(*) FROM {{jobsTable}} GROUP BY 1',
                 'UNLOCK TABLES',
             ],
