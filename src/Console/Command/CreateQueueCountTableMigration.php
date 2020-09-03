@@ -48,19 +48,19 @@ class CreateQueueCountTableMigration extends Command
     {
         // Table migration.
         $this->replaceMigration(
-            '01_create_database_queue_counts_table',
+            'create_database_queue_counts_01_table',
             __DIR__ . '/queue_counts_table.stub'
         );
 
         // Trigger creation.
         $this->replaceMigration(
-            '02_create_database_queue_counts_trigger',
+            'create_database_queue_counts_02_trigger',
             __DIR__ . '/queue_counts_trigger.stub'
         );
 
         // Populate the counts table.
         $this->replaceMigration(
-            '03_create_database_queue_counts_insertion',
+            'create_database_queue_counts_03_insertion',
             __DIR__ . '/queue_counts_insert.stub'
         );
 
