@@ -23,7 +23,7 @@ class {{className}} extends Migration
             ],
             'sqlite' => [
                 'CREATE TRIGGER {{jobsTable}}_increase_queue_counts AFTER INSERT ON {{jobsTable}} BEGIN
-                    INSERT IGNORE INTO {{table}} (queue, job_count) VALUES (NEW.queue, 0);
+                    INSERT OR IGNORE INTO {{table}} (queue, job_count) VALUES (NEW.queue, 0);
                     UPDATE {{table}} SET job_count = job_count + 1 WHERE queue = NEW.queue;
                  END',
                 'CREATE TRIGGER {{jobsTable}}_decrease_queue_counts AFTER DELETE ON {{jobsTable}} BEGIN
