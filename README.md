@@ -60,8 +60,10 @@ for some additional configuration options:
 
 ## Changelog
 
+* **1.3.2**
+    * Exclude `laravel/database` versions `>=7.30.3 <8.0`, due to Dependabot alert.
 * **1.3.1**
-    * Exclude `laravel/database` versions < 8.22.1, due to Dependabot alert.
+    * Exclude `laravel/database` versions `>= 8.0 <8.22.1`, due to Dependabot alert.
 
 * **1.3.0**
     * Add support for Laravel 8.
