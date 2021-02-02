@@ -58,3 +58,7 @@ for some additional configuration options:
 | prefetch | int  | 5       | Determines how many queue jobs to fetch before attempting to reserve one. Should ideally default to the number of workers for your queue. |
 | shuffle  | bool | true    | Whether or not to shuffle fetched jobs before attempting to reserve one.                                                                  |
 
+## Changelog
+
+* **1.3.0**
+   * Add support for Laravel 8.
